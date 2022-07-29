@@ -25,29 +25,40 @@ class Eva {
 
     // Math operations
     if (exp[0] === "+") {
-      return eva.eval(exp[1]) + eva.eval(exp[2]);
+      return eva.eval(exp[1], env) + eva.eval(exp[2], env);
     }
 
     if (exp[0] === "-") {
-      return eva.eval(exp[1]) - eva.eval(exp[2]);
+      return eva.eval(exp[1], env) - eva.eval(exp[2], env);
     }
 
     if (exp[0] === "*") {
-      return eva.eval(exp[1]) * eva.eval(exp[2]);
+      return eva.eval(exp[1], env) * eva.eval(exp[2], env);
     }
 
     if (exp[0] === "/") {
-      return eva.eval(exp[1]) / eva.eval(exp[2]);
+      return eva.eval(exp[1], env) / eva.eval(exp[2], env);
     }
 
-    // Variables ... add variable to current environment
+    //Blocks operations : sequence of expressions
+    if (exp[0] === "begin") {
+      const blockEnv = new Environment({}, env); // parent env is current env
+      return this._evalBlock(exp, blockEnv);
+    }
+
+    // Variable declaration:  ... add variable to current environment
     if (exp[0] === "var") {
       const [_, name, value] = exp; // what ?
-      return env.define(name, this.eval(value));
+      return env.define(name, this.eval(value, env));
+    }
+
+    //variables assignment
+    if (exp[0] === "set") {
+      const [_, name, value] = exp;
+      return env.assign(name, this.eval(value, env));
     }
 
     //Variable access
-
     if (isVariableName(exp)) {
       //console.log("this is variable name");
       return env.lookup(exp);
@@ -56,6 +67,15 @@ class Eva {
     //throw 'Unimplemented "${JSON.stringify(exp)}"';
 
     throw `Unimplemented: ${JSON.stringify(exp)}`;
+  }
+
+  _evalBlock(block, env) {
+    let result;
+    const [_tag, ...expressions] = block;
+    expressions.forEach((exp) => {
+      result = this.eval(exp, env);
+    });
+    return result;
   }
 }
 
@@ -114,5 +134,43 @@ assert.strictEqual(eva.eval(["var", "z", ["*", 2, 2]]), 4);
 assert.strictEqual(eva.eval("z"), 4);
 
 assert.strictEqual(eva.eval(["var", "isUser", "true"]), true);
+
+assert.strictEqual(
+  eva.eval([
+    "begin",
+    ["var", "x", 10],
+    ["var", "y", 20],
+    ["+", ["*", "x", "y"], 30],
+  ]),
+  230
+);
+
+// nested environments
+assert.strictEqual(
+  eva.eval(["begin", ["var", "x", 10], ["begin", ["var", "x", 20], "x"], "x"]),
+  10
+);
+
+//access to variable in outer environment
+assert.strictEqual(
+  eva.eval([
+    "begin",
+    ["var", "value", 10],
+    ["var", "result", ["begin", ["var", "x", ["+", "value", 20]], "x"]],
+    "result",
+  ]),
+  30
+);
+
+//assignment variables
+assert.strictEqual(
+  eva.eval([
+    "begin",
+    ["var", "data", 10],
+    ["begin", ["set", "data", 100]],
+    "data",
+  ]),
+  100
+);
 
 console.log("All assertions passed!");
