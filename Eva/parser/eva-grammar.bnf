@@ -1,0 +1,73 @@
+/**
+  *Backus–Naur form
+  *S-expressions parser
+  *Atom: 42, foo, bar, "Hello world"
+  *List: (), (+ 5 x), (print "hello")
+
+
+   * 1. Install syntax-cli:
+   *
+   *   npm install -g syntax-cli
+   *
+   * 2. Generate the parser from this grammar:
+   *
+   *  syntax-cli -g parser/eva-grammar.bnf -m LALR1 -o parser/evaParser.js
+
+   * Evaluate one line:
+   * syntax-cli --grammar parser/eva-grammar.bnf --mode LALR1 --parse '42' --tokenize
+   
+    * Test for lists:
+    * syntax-cli --grammar parser/eva-grammar.bnf --mode LALR1 --parse "(+ 5 foo)" --tokenize
+    * syntax-cli --grammar parser/eva-grammar.bnf --mode LALR1 --parse "(begin (var x 10) (var y 20) (+ x y))" --tokenize
+*/
+
+
+// Lexical grammar ( tokens ) :
+
+%lex
+
+%%
+
+\s+            /* skip whitespaces */
+
+\"[^\"]*\"     return 'STRING'
+
+\d+            return 'NUMBER'
+
+[\w\-+*=<>/]+  return 'SYMBOL'
+
+/lex
+
+
+//
+// Syntactic grammar (BNF)
+//
+
+%%
+
+Exp
+    : Atom
+    | List
+    ;
+
+Atom
+    : NUMBER { $$ = Number($1)}
+    | STRING
+    | SYMBOL
+    ;
+
+List
+    : "(" ListEntries ")" { $$ = $2 }
+    ;
+
+// ( Exp Exp Exp ... )
+
+// ListEntries Exp
+// ListEntries Exp Exp
+// ListEntries Exp Exp Exp ...
+
+ListEntries
+    : ListEntries Exp { $1.push($2); $$ = $1 }
+    |  /* empty */ { $$ = [] }
+    ;
+
