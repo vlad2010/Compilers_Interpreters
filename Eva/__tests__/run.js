@@ -8,22 +8,14 @@ const tests = [
   require("./block-test.js"),
   require("./if-test.js"),
   require("./while-test.js"),
+  require("./built-in-function-test.js"),
 ];
 
 // -------------------
 // Tests:
+const eva = new Eva();
+tests.forEach(test => test(eva));
 
-// const eva = new Eva();
-
-const eva = new Eva(
-  new Environment({
-    null: null,
-    true: true,
-    false: false,
-    VERSION: "0.1",
-  })
-);
-
-tests.forEach((test) => test(eva));
+eva.eval(["print", '"Hello"', '"World!"']);
 
 console.log("All assertions passed!");
