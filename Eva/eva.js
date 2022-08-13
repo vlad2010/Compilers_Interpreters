@@ -68,13 +68,31 @@ class Eva {
     }
 
     // Function declaration: (def square (x) (* x x))
+
+    // Syntactic sugar for: (var square (lambda (x) (* x x)))
+
     if(exp[0]=== 'def') {
        const [_tag, name, params, body] = exp;
-       const fn = {
-           params, body, env // we capture environment as all functions a closures
-       };
+       // const fn = {
+       //     params, body, env // we capture environment as all functions a closures
+       // };
+       // return env.define(name, fn);
 
-       return env.define(name, fn);
+       // JIT transpile to a variable declaration
+       const varExp = ['var', name, ['lambda', params, body]];
+       return this.eval(varExp, env);
+    }
+
+    // Lambda functions: (lambda (x) (* x x))
+    if(exp[0] === 'lambda') {
+      const[_tag, params, body] = exp;
+
+      return {
+        params,
+        body,
+        env   //Closure
+      }
+
     }
 
 
@@ -99,7 +117,6 @@ class Eva {
 
       fn.params.forEach((param, index) => {
         activationRecord[param] = args[index];
-
       });
 
       const activationEnv = new Environment(activationRecord, fn.env);
