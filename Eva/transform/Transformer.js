@@ -46,6 +46,35 @@ class Transformer
 
 	}
 
+	transformIncToSet(incExp)
+	{
+		const [_tag, varname] = incExp;
+		const setExpr = ["set", varname, ["+", varname, 1]];
+		return setExpr;
+	}
+
+	transformDecToSet(decExp)
+	{
+		const [_tag, varname] = decExp;
+		const setExpr = ["set", varname, ["-", varname, 1]];
+		return setExpr;
+	}
+
+	transformIncValToSet(incValExp)
+	{
+		const [_tag, varname, value] = incValExp;
+		const setExpr = ["set", varname, ["+", varname, value]];
+		return setExpr;
+	}
+
+	transformDecValToSet(decValExp)
+	{
+		const [_tag, varname, value] = decValExp;
+		const setExpr = ["set", varname, ["-", varname, value]];
+		return setExpr;
+	}
+
+
 }
 
 module.exports = Transformer;

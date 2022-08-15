@@ -88,6 +88,26 @@ class Eva {
        return this.eval(whileExp, env);
     }
 
+    if(exp[0]=== '++') {
+       const setExp = this._transformer.transformIncToSet(exp);
+       return this.eval(setExp, env);
+    }
+
+    if(exp[0]=== '--') {
+       const setExp = this._transformer.transformDecToSet(exp);
+       return this.eval(setExp, env);
+    }
+
+    if(exp[0]=== '+=') {
+       const setExp = this._transformer.transformIncValToSet(exp);
+       return this.eval(setExp, env);
+    }
+
+    if(exp[0]=== '-=') {
+       const setExp = this._transformer.transformDecValToSet(exp);
+       return this.eval(setExp, env);
+    }
+
     // Lambda functions: (lambda (x) (* x x))
     if(exp[0] === 'lambda') {
       const[_tag, params, body] = exp;

@@ -12,6 +12,11 @@ const tests = [
   require("./user-defined-function-test.js"),
   require("./lambda-function-test.js"),
   require("./switch-test.js"),
+  require("./for-test.js"),
+  require("./inc-test.js"),
+  require("./dec-test.js"),
+  require("./inc-val-test.js"),
+  require("./dec-val-test.js"),
 ];
 
 // -------------------
