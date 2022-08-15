@@ -55,4 +55,18 @@ test(eva, `
   `, 120
   );
 
+test(eva, `
+    (begin
+      (def CreateCallback (x)
+        (lambda (y) (+ x y))
+      )
+      (var fn
+         (CreateCallback 5)
+      )
+      (fn 10)
+    )
+  `, 15
+  );
+
+
 };
