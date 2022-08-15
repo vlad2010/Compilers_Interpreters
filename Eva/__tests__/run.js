@@ -19,6 +19,5 @@ const tests = [
 const eva = new Eva();
 tests.forEach(test => test(eva));
 
-eva.eval(["print", '"Hello"', '"World!"']);
-
+res = eva.eval(["print", '"Hello"', '"World!"']);
 console.log("All assertions passed!");

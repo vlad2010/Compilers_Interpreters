@@ -35,6 +35,17 @@ class Transformer
 
 		return ifExpr;
 	}
+
+	transformForToWhile(forExpr) {
+
+		const [_tag, init, condition, modifier, exp] = forExpr;
+
+		const loop = ["while", condition, ["begin", exp, modifier]];
+		const whileExpr = ["begin", init, loop];
+		return whileExpr;
+
+	}
+
 }
 
 module.exports = Transformer;

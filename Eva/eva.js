@@ -83,6 +83,11 @@ class Eva {
        return this.eval(ifExp, env);
     }
 
+    if(exp[0]=== 'for') {
+       const whileExp = this._transformer.transformForToWhile(exp);
+       return this.eval(whileExp, env);
+    }
+
     // Lambda functions: (lambda (x) (* x x))
     if(exp[0] === 'lambda') {
       const[_tag, params, body] = exp;
@@ -130,7 +135,7 @@ class Eva {
   }
 
   _evalBody(body, env) {
-    if( body[0] == 'begin') {
+    if(body[0] == 'begin') {
       return this._evalBlock(body, env);
     }
 
@@ -143,6 +148,7 @@ class Eva {
     expressions.forEach((exp) => {
       result = this.eval(exp, env);
     });
+
     return result;
   }
 
