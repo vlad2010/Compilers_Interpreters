@@ -13,6 +13,12 @@ class Eva {
     this._transformer = new Transformer();
   }
 
+  // Evaluetes global code wrapping into a block
+  evalGlobal(expressions)
+  {
+      return this._evalBlock(['block', expressions], this.global);
+  }
+
   // Evaluate expresson in the given environment
   eval(exp, env = this.global) {
 
@@ -150,6 +156,14 @@ class Eva {
       // Class is accessible by name
       return env.define(name, classEnv);
     }
+
+    // Super expressions : (Super <Name> <Parent> <Body>)
+    if(exp[0] === 'super')
+    {
+        const [_tag, className] = exp;
+        return this.eval(className, env).parent;
+    }
+
 
     // Class instaniation : ( new <Class> <Arguments>... )
     if(exp[0] === 'new')
