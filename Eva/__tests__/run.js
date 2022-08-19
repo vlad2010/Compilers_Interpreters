@@ -17,6 +17,7 @@ const tests = [
   require("./dec-test.js"),
   require("./inc-val-test.js"),
   require("./dec-val-test.js"),
+  require("./class-test.js"),
 ];
 
 // -------------------
