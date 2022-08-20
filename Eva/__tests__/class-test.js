@@ -51,7 +51,7 @@ module.exports = (eva) => {
 
    		      (def constructor (this x y z)
    		      	 (begin
-   		      	    ((prop (super Point3D) constructor) Point x y)
+   		      	    ((prop (super Point3D) constructor) this x y)
                     (set (prop this z) z)
    		      	 )
    		      )

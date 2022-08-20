@@ -1,6 +1,8 @@
 const Environment = require("./Environment");
 const Transformer = require("./transform/Transformer");
+const evaParser = require("./parser/evaParser");
 
+const fs = require('fs');
 
 /**
    Eva interpreter
@@ -14,9 +16,9 @@ class Eva {
   }
 
   // Evaluetes global code wrapping into a block
-  evalGlobal(expressions)
+  evalGlobal(exp)
   {
-      return this._evalBlock(['block', expressions], this.global);
+      return this._evalBlock(exp, this.global);
   }
 
   // Evaluate expresson in the given environment
@@ -190,6 +192,37 @@ class Eva {
         const instanceEnv = this.eval(instance, env);  
 
         return instanceEnv.lookup(name);
+    }
+
+    // Module declaration : (module <body>)
+    if(exp[0] === 'module')
+    {
+      const [_tag, name, body] = exp;
+      const moduleEnv = new Environment({}, env);
+
+      this._evalBody(body, moduleEnv);
+
+      return env.define(name, moduleEnv);
+    }
+
+    // Module import: (import <name>)
+
+    // extended syntax , not implemented yet
+    // (import (export1, export2, ... ) name)
+
+
+    if(exp[0] === 'import')
+    {
+        const [_tag, name] = exp;
+
+        const moduleSrc = fs.readFileSync(`${__dirname}/modules/${name}.eva`, 'utf-8');
+
+        const body = evaParser.parse(`(begin ${moduleSrc})`);
+
+        const moduleExp = ['module', name, body];
+
+        return this.eval(moduleExp, this.global);
+
     }
 
 

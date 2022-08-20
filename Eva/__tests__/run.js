@@ -18,6 +18,8 @@ const tests = [
   require("./inc-val-test.js"),
   require("./dec-val-test.js"),
   require("./class-test.js"),
+  require("./module-test.js"),
+  require("./import-test.js"),
 ];
 
 // -------------------
