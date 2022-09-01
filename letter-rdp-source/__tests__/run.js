@@ -2,7 +2,10 @@ const {Parser} = require('../src/Parser');
 
 const parser = new Parser();
 
-const program = `42`;
+// const program = `'hello'`;
+// const program = `"hello"`;
+// const program = `"42"`;
+const program = `'42'`;  // also should be supported
 
 const ast = parser.parse(program);
 
