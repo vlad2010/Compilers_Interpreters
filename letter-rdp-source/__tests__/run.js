@@ -56,6 +56,8 @@ exec();
 const tests = [
 	require('./literal-tests.js'),
 	require('./statement-list-test.js'),
+	require('./block-test.js'),
+	require('./empty-statement-test.js'),
 ]
 
 tests.forEach(testRun => testRun(test));
