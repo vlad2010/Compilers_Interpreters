@@ -1,6 +1,29 @@
+// Tokenizer specs
+
+// set of regular expression rules
+const Spec = [
+	// Whitespaces:
+	[/^\s+/, null], // skip this token
+
+	// Comments: 
+	// Single line comments:
+	[/^\/\/.*/, null],
+
+	// Multiline comment
+	[/^\/\*[\s\S]*?\*\//, null],
+
+	// Numbers:
+	[/^\d+/, 'NUMBER'],
+
+	// Strings:
+	[/"[^"]*"/, 'STRING'],
+	[/'[^']*'/, 'STRING']
+];
+
+
 // Tokenizer class
 // Lazily pulls a token from a stream
-
+ 
 class Tokenizer {
 		
 	init(string) {
@@ -25,37 +48,43 @@ class Tokenizer {
 		}
 		const string  = this._string.slice(this._cursor);
 
-		// String tokens 
-		if(string[0] === '"' || string[0] === '\'')  {
+		// generic get token implementaton using regexp specs
+		for (const [regexp, tokenType] of Spec) {
 
-			let quote = string[0];
+			const tokenValue = this._match(regexp, string);
 
-			let s = '';
-			do {
-				s += string[this._cursor++];
-			} while (string[this._cursor] !== quote && !this.isEOF());
-			s += this._cursor++; // skip closing "
+			// == vs === in JavaScript 
+			if(tokenValue == null) {
+				continue;
+			}
+
+			// in case of whitespaces skip and get next token
+			if(tokenType == null) {
+				return this.getNextToken();
+			}
 
 			return {
-				type: 'STRING',
-				value: s,
+				type: tokenType,
+				value: tokenValue,
 			}
 		}
 
-		// Numbers :
-		if(!Number.isNaN(string[0])) {
-			let number = "";
-			while(!Number.isNaN(Number(string[this._cursor]))) {
-				number += string[this._cursor++];
-			}
-			return {
-				type: 'NUMBER',
-				value: number,
-			}
-		}
-
-		return null;
+		throw new SyntaxError (`Unexpected token: "${string[0]}"`);
 	}
+
+	// helper function to match regexp with string 
+	_match(regexp, string) {
+		const matched = regexp.exec(string);
+
+		if(matched === null) {
+			return null;
+		}	
+
+		this._cursor += matched[0].length;
+		return matched[0];
+
+	}
+
 }
 
 module.exports = {
