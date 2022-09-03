@@ -1,3 +1,5 @@
+const assert = require("assert");
+
 const {Parser} = require('../src/Parser');
 
 const parser = new Parser();
@@ -23,18 +25,39 @@ const parser = new Parser();
 // */
 // "hello block comments"`;  // also should be supported
 
-const program = `   
-/**
-* Documenation comment:
-*
-*/
-"hello block comments"
-// Number:
-42
-`;  // also should be supported
+
+// for quick manual tests
+function exec() {
+	const program = `   
+	/**
+	* Documenation comment:
+	*
+	*/
+	"hello block comments";
+	// Number:
+	42;
+
+	`;  // also should be supported
+
+	const ast = parser.parse(program);
+	console.log(JSON.stringify(ast, null, 2));
+}
 
 
+// test function
+function test(program, expected) {
+	const ast = parser.parse(program);
+	assert.deepEqual(ast, expected);
+}
 
-const ast = parser.parse(program);
+exec();
 
-console.log(JSON.stringify(ast, null, 2));
+// List of tests  
+const tests = [
+	require('./literal-tests.js'),
+	require('./statement-list-test.js'),
+]
+
+tests.forEach(testRun => testRun(test));
+
+console.log('All test cases passed!')

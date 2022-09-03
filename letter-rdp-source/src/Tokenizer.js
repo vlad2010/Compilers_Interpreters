@@ -12,6 +12,9 @@ const Spec = [
 	// Multiline comment
 	[/^\/\*[\s\S]*?\*\//, null],
 
+	// Symbols, delimiters
+	[/^;/, ';'],
+
 	// Numbers:
 	[/^\d+/, 'NUMBER'],
 
@@ -46,20 +49,21 @@ class Tokenizer {
 		if(!this.hasMoreTokens()) {
 			return null;
 		}
-		const string  = this._string.slice(this._cursor);
+		const string = this._string.slice(this._cursor);
 
 		// generic get token implementaton using regexp specs
 		for (const [regexp, tokenType] of Spec) {
 
 			const tokenValue = this._match(regexp, string);
+			// console.log("tokenValue: " + tokenValue);
 
 			// == vs === in JavaScript 
-			if(tokenValue == null) {
+			if(tokenValue === null) {
 				continue;
 			}
 
 			// in case of whitespaces skip and get next token
-			if(tokenType == null) {
+			if(tokenType === null) {
 				return this.getNextToken();
 			}
 
@@ -69,7 +73,7 @@ class Tokenizer {
 			}
 		}
 
-		throw new SyntaxError (`Unexpected token: "${string[0]}"`);
+		throw new SyntaxError (`Unexpected token: "${string}"`);
 	}
 
 	// helper function to match regexp with string 
