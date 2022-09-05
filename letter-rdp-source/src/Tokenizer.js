@@ -1,6 +1,7 @@
 // Tokenizer specs
 
 // set of regular expression rules
+// order of these rules are important!
 const Spec = [
 	// Whitespaces:
 	[/^\s+/, null], // skip this token
@@ -21,6 +22,13 @@ const Spec = [
 
 	// Numbers:
 	[/^\d+/, 'NUMBER'],
+
+	// Identifiers:
+	[/^\w+/, 'IDENTIFIER'],
+
+	// Assigmnet operators: =, *=, /=, +=, -=
+	[/^=/, 'SIMPLE_ASSIGN'],
+	[/^[\*\/\+\-]=/, 'COMPLEX_ASSIGN'],
 
 	// Strings:
 	[/"[^"]*"/, 'STRING'],

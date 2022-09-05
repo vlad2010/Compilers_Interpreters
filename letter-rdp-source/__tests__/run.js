@@ -5,7 +5,8 @@ const parser = new Parser();
 // for quick manual tests
 function exec() {
 	const program = `   
-	(42 + 23)  * 10;
+	x = y + 10;
+	x +=1;
 
 	`;
 
