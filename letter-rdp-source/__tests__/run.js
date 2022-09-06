@@ -5,8 +5,18 @@ const parser = new Parser();
 // for quick manual tests
 function exec() {
 	const program = `   
-	x = y + 10;
-	x +=1;
+
+	let y;
+
+	let a, b;
+
+	let c, d = 10;
+
+	let x  = 42;
+
+	r = 10;
+
+	let foo = bar = 10;
 
 	`;
 
@@ -29,8 +39,9 @@ const tests = [
 	require('./block-test.js'),
 	require('./empty-statement-test.js'),
 	require('./math-test.js'),
+	require('./variable-test.js'),
 ]
 
-tests.forEach(testRun => testRun(test));
+// tests.forEach(testRun => testRun(test));
 
 console.log('All test cases passed!')
