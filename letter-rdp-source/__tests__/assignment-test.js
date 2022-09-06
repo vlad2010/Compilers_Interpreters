@@ -22,9 +22,9 @@ module.exports = test => {
 					}
 				}
 			]
-		})
+		});
 
-	    // Chained assignment 
+     //Chained assignment 
 	 test(`x = y = 42;`,
  		{  
 			type: 'Program',
@@ -40,9 +40,6 @@ module.exports = test => {
 							name: 'x',
 						},
 						right: {
-							type: 'ExpressionStatement',
-							expression:
-							{
 								type: 'AssignmentExpression',
 								operator: '=',
 								left :{
@@ -52,12 +49,11 @@ module.exports = test => {
 								right: {
 									type: 'NumericLiteral',
 									value: 42,
-								}
-							}
-						}
-					}
-				}
-			]
-		})
+								},
+						},
+					},
+				},
+			],
+		});
 
 };

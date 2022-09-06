@@ -6,17 +6,21 @@ const parser = new Parser();
 function exec() {
 	const program = `   
 
-	let y;
+	// let x = 42;
+	
+	// if (x >= 10) {
+	// 	x = 0;
+	// } else {
+	// 	x += 1;
+	// };
 
-	let a, b;
+	// if(x) x = 0;
+	// if(x) if(x) {} else {};
 
-	let c, d = 10;
+	// if(x> 10)
 
-	let x  = 42;
+	x + 5 > 10;
 
-	r = 10;
-
-	let foo = bar = 10;
 
 	`;
 
@@ -40,8 +44,11 @@ const tests = [
 	require('./empty-statement-test.js'),
 	require('./math-test.js'),
 	require('./variable-test.js'),
+	require('./assignment-test.js'),
+	require('./if-test.js'),
+	require('./relational-test.js'),
 ]
 
-// tests.forEach(testRun => testRun(test));
+tests.forEach(testRun => testRun(test));
 
 console.log('All test cases passed!')

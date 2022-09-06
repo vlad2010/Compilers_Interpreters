@@ -5,7 +5,7 @@ module.exports = test => {
      	type: 'Program',
      	body: [
      	 {  type: 'VariableStatement',
-     		declarations: [
+     		declaration: [
      			{
      				type: 'VariableDeclaration',
      				id: {
@@ -30,7 +30,7 @@ module.exports = test => {
      	body: [
      	  {
      		type: 'VariableStatement',
-     		declarations: [
+     		declaration: [
      			{
      				type: 'VariableDeclaration',
      				id: {
@@ -51,7 +51,7 @@ module.exports = test => {
      	body: [
      	  {
      		type: 'VariableStatement',
-     		declarations: [
+     		declaration: [
      			{
      				type: 'VariableDeclaration',
      				id: {
@@ -80,7 +80,7 @@ module.exports = test => {
      	body: [
      	  {	
      		type: 'VariableStatement',
-     		declarations: [
+     		declaration: [
      			{
      				type: 'VariableDeclaration',
      				id: {
