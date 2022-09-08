@@ -1,6 +1,6 @@
 module.exports = test => {
 
-   // Simple assignment 
+   // Simple compare
 	 test(`x > 42;`,
  		{  
 			type: 'Program',

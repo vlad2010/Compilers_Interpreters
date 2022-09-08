@@ -5,23 +5,8 @@ const parser = new Parser();
 // for quick manual tests
 function exec() {
 	const program = `   
-
-	// let x = 42;
-	
-	// if (x >= 10) {
-	// 	x = 0;
-	// } else {
-	// 	x += 1;
-	// };
-
-	// if(x) x = 0;
-	// if(x) if(x) {} else {};
-
-	// if(x> 10)
-
-	x + 5 > 10;
-
-
+	x + 5 > 10 == true;
+	x > 5 || y < 10;
 	`;
 
 	const ast = parser.parse(program);
@@ -47,6 +32,8 @@ const tests = [
 	require('./assignment-test.js'),
 	require('./if-test.js'),
 	require('./relational-test.js'),
+	require('./equality-test.js'),
+	require('./logical-test.js'),
 ]
 
 tests.forEach(testRun => testRun(test));
