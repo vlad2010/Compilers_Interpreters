@@ -5,11 +5,12 @@ const parser = new Parser();
 // for quick manual tests
 function exec() {
 	const program = `   
-	!x;
-	-x;
-	-+!-y;
 
 
+	 	for(let i = 0, z = 0; i < 10; i += 1)
+	 	{
+			x += 1;
+		}
 	`;
 
 	const ast = parser.parse(program);
@@ -38,6 +39,9 @@ const tests = [
 	require('./equality-test.js'),
 	require('./logical-test.js'),
 	require('./unary-test.js'),
+	require('./while-test.js'),
+	require('./do-while-test.js'),
+	require('./for-test.js'),
 ]
 
 tests.forEach(testRun => testRun(test));
