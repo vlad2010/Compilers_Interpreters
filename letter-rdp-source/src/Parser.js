@@ -342,12 +342,12 @@ class Parser {
 	 }
 
 	 /** MultiplicativeExpression
-	 * 	: PrimaryExpression
-	 *  | MultiplicativeExpression MULTIPLICATIVE_OPERATOR Literal -> Literal MULTIPLICATIVE_OPERATOR Literal MULTIPLICATIVE_OPERATOR
+	 * 	: UnaryExpression
+	 *  | MultiplicativeExpression MULTIPLICATIVE_OPERATOR UnaryExpression
 	 *  ;
 	 */
 	 MultiplicativeExpression() {
-	 	return this._BinaryExpression('PrimaryExpression', 'MULTIPLICATIVE_OPERATOR');
+	 	return this._BinaryExpression('UnaryExpression', 'MULTIPLICATIVE_OPERATOR');
 	}
 	
 	/** 
@@ -393,10 +393,47 @@ class Parser {
 	 	return left;
 	}
 
+
+	/** UnaryExpression
+	 * 	: LeftHandSideExpression
+	 *  | ADDITIVE_OPERATOR UnaryExpression
+	 *  | LOGICAL_NOT UnaryExpression
+	 *  ;
+	 */
+	UnaryExpression() {
+		let operator;
+		switch (this._lookahead.type) {
+			case 'ADDITIVE_OPERATOR':
+				operator = this._eat('ADDITIVE_OPERATOR').value;
+				break;
+			case 'LOGICAL_NOT':
+				operator = this._eat('LOGICAL_NOT').value;
+				break;
+		}
+
+		if(operator != null) {
+			return {
+				type: 'UnaryExpression',
+				operator,
+				argument: this.UnaryExpression(), // --> ----++x 
+			};
+		}
+		return this.LeftHandSideExpression();
+	}
+
+	/** LeftHandSideExpression
+	 * 	: Identifier
+	 *  ;
+	 */
+	LeftHandSideExpression() {
+		return this.PrimaryExpression();
+	}
+
+
 	/** PrimaryExpression
 	 * 	: Literal
 	 *  | ParenthesizedExpression
-	 *  | LeftHandSideExpression
+	 *  | Identifier
 	 *  ;
 	 */
 	 PrimaryExpression() {
@@ -409,6 +446,8 @@ class Parser {
 	 	{
 	 		case '(':
 	 			return this.ParenthesizedExpression();
+	 		case 'IDENTIFIER':
+	 			return this.Identifier();
 	 		default:
 			 	return this.LeftHandSideExpression();
 	 	}

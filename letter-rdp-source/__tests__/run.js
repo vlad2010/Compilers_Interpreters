@@ -5,8 +5,11 @@ const parser = new Parser();
 // for quick manual tests
 function exec() {
 	const program = `   
-	x + 5 > 10 == true;
-	x > 5 || y < 10;
+	!x;
+	-x;
+	-+!-y;
+
+
 	`;
 
 	const ast = parser.parse(program);
@@ -34,6 +37,7 @@ const tests = [
 	require('./relational-test.js'),
 	require('./equality-test.js'),
 	require('./logical-test.js'),
+	require('./unary-test.js'),
 ]
 
 tests.forEach(testRun => testRun(test));
