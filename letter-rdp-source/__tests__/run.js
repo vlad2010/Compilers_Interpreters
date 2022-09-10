@@ -4,13 +4,9 @@ const parser = new Parser();
 
 // for quick manual tests
 function exec() {
-	const program = `   
+	const program = ` 
 
-	    def square(x, y) 
-
-		{
-		 	return x * y;
-		}
+		a.b.c['d'];
 
 	`;
 
@@ -45,6 +41,7 @@ const tests = [
 	require('./for-test.js'),
 	require('./sequence-expression-test.js'),
 	require('./function-declaration-test.js'),
+	require('./member-test.js'),
 ]
 
  tests.forEach(testRun => testRun(test));
