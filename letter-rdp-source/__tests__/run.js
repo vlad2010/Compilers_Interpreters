@@ -6,11 +6,7 @@ const parser = new Parser();
 function exec() {
 	const program = `   
 
-
-	 	for(let i = 0, z = 0; i < 10; i += 1)
-	 	{
-			x += 1;
-		}
+		b = 5, c = 5, m = 4;
 	`;
 
 	const ast = parser.parse(program);
@@ -42,8 +38,9 @@ const tests = [
 	require('./while-test.js'),
 	require('./do-while-test.js'),
 	require('./for-test.js'),
+	require('./sequence-expression-test.js'),
 ]
 
-tests.forEach(testRun => testRun(test));
+ tests.forEach(testRun => testRun(test));
 
 console.log('All test cases passed!')

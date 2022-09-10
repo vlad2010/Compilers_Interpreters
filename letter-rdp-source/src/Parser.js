@@ -78,7 +78,7 @@ class Parser {
 	 		case 'for':
 	 			return this.IterationStatement();
 	 		default:
-			 	return this.ExpressionStatement();
+			 	return this.SequenceExpressionStatement();
 	 	}
 	 }
 
@@ -182,8 +182,7 @@ class Parser {
 			return this.VariableStatementInit();
 		}
 
-		return this.Expression();
-
+		return this.SequenceExpressionStatement();
 	}
 
 
@@ -308,13 +307,69 @@ class Parser {
 	 	};
 	 }
 
+	 ///** VariableDeclarationList
+	 // * 	: VariableDeclaration
+	 // *  | VariableDeclarationList ',' VariableDeclaration
+	 // *  ;
+	 // */
+	 // VariableDeclarationList() {
+	 // 	const declaration = [];
+
+	 // 	do {
+	 // 		declaration.push(this.VariableDeclaration());
+	 // 	} while (this._lookahead.type === ',' && this._eat(','));
+
+	 // 	return declaration;
+	 // }
+
+
+	/** SequenceExpressionStatement
+	 * 	: Expression ',' Expression ;'
+	 *  ;
+	 */
+	 SequenceExpressionStatement() {
+	 	const expressions = this.SequenceExpressionList();
+	 	this._eat(';');
+
+	 	if (expressions.length > 1)
+	 	{	
+		 	return {
+		 		type: 'SequenceExpressionStatement',
+		 		expressions,
+		 	};
+		 }
+		 else
+		 {
+	 		// let expression = expressions[0];
+	 		// return expression;
+	 		return expressions[0];
+		 };
+
+	 	
+	}
+
+	/** SequenceExpressionsList
+	 * 	: Expression ',' Expression ;'
+	 *  ;
+	 */
+	 SequenceExpressionList() {
+
+	 	const declaration = [];
+
+	 	do {
+	 		declaration.push(this.ExpressionStatement());
+	 	} while (this._lookahead.type === ',' && this._eat(','));
+
+	 	return declaration;
+	 }
+
 	/** ExpressionStatement
 	 * 	: Expression ';'
 	 *  ;
 	 */
 	 ExpressionStatement() {
 	 	const expression = this.Expression();
-	 	this._eat(';');
+	 	// this._eat(';');
 
 	 	return {
 	 		type: 'ExpressionStatement',
