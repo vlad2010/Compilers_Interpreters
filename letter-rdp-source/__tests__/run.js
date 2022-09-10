@@ -6,7 +6,12 @@ const parser = new Parser();
 function exec() {
 	const program = `   
 
-		b = 5, c = 5, m = 4;
+	    def square(x, y) 
+
+		{
+		 	return x * y;
+		}
+
 	`;
 
 	const ast = parser.parse(program);
@@ -39,6 +44,7 @@ const tests = [
 	require('./do-while-test.js'),
 	require('./for-test.js'),
 	require('./sequence-expression-test.js'),
+	require('./function-declaration-test.js'),
 ]
 
  tests.forEach(testRun => testRun(test));
