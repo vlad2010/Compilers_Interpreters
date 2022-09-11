@@ -1,0 +1,25 @@
+// What next?
+
+// Async await 
+async def loadData() {
+	const connection = await createConnection();
+	...
+}
+
+// lambda methods
+const handler = (data, score) => {
+	return data * score;
+};
+
+data.map((index, value) => {
+	//handle data 
+
+});
+
+
+// new expressions for 
+new Array();
+new HashMap();
+
+const values = [1,2,3];
+const hash = {'x': 10, 'y':20};
